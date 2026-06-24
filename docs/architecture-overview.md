@@ -1,68 +1,68 @@
-# Architecture Overview
+# 架构总览
 
-## Core Principle
+## 核心原则
 
 先做电脑端 Copilot，后做全自动和移动端。
 
 系统的长期目标是多平台复用，但第一阶段要优先验证商业价值：商家是否愿意每天使用 AI 建议回复、是否愿意付费、知识库是否能降低重复客服成本。
 
-## Target Architecture
+## 目标架构
 
 ```text
-Merchant Web Customer Service Page
-  -> Chrome Extension Content Script
-  -> Extension Sidebar / Popup
-  -> Spring Boot Backend
-  -> Message Store / Knowledge Base / Risk Policy
-  -> Python AI Service
-  -> Reply Suggestion
-  -> Human Review
-  -> Copy / Fill Draft / Optional Low-risk Send
+商家 Web 客服工作台
+  -> Chrome 插件 Content Script
+  -> 插件侧边栏 / 弹窗
+  -> Spring Boot 后端
+  -> 消息库 / 知识库 / 风险策略
+  -> Python AI 服务
+  -> 回复建议
+  -> 人工确认
+  -> 复制 / 填入草稿 / 可选低风险发送
 ```
 
-## Module Ownership
+## 模块职责
 
-### Chrome Extension
+### Chrome 插件
 
-- Detect supported platform pages.
-- Read visible customer messages from the current web customer-service conversation.
-- Send normalized message events to the backend.
-- Display AI suggestions in a sidebar or popup.
-- Support copy, fill draft, and later low-risk send actions.
+- 识别已支持的平台页面。
+- 读取当前 Web 客服会话中可见的买家消息。
+- 将标准化后的消息事件发送到后端。
+- 在侧边栏或弹窗中展示 AI 建议回复。
+- 支持复制、填入草稿，后续再支持低风险自动发送。
 
-### Spring Boot Backend
+### Spring Boot 后端
 
-- Own business truth.
-- Manage merchants, platform accounts, conversations, messages, knowledge bases, reply suggestions, risk policies, and subscription limits.
-- Provide APIs for the Chrome extension and management console.
-- Persist evidence needed for debugging and quality review.
+- 负责业务事实和核心数据。
+- 管理商家、平台账号、会话、消息、知识库、回复建议、风险策略和套餐限制。
+- 为 Chrome 插件和管理后台提供 API。
+- 保存排查问题和评估回复质量所需的证据。
 
-### Python AI Service
+### Python AI 服务
 
-- Own AI capability.
-- Classify customer intent.
-- Retrieve merchant knowledge base and FAQ content.
-- Generate suggested replies.
-- Return risk level, evidence, and suggested next action.
+- 负责 AI 能力。
+- 识别买家意图。
+- 检索商家知识库和 FAQ。
+- 生成建议回复。
+- 返回风险等级、证据和建议动作。
 
-### Frontend Console
+### 管理后台
 
-- Manage merchant knowledge bases.
-- Review conversation history and reply quality.
-- Configure reply style, working hours, risk rules, and platform accounts.
-- Show usage, conversion, and handoff metrics.
+- 管理商家知识库。
+- 查看会话历史和回复质量。
+- 配置回复风格、工作时间、风险规则和平台账号。
+- 展示使用量、转化、人工接管等指标。
 
-### Future Collectors
+### 后续采集器
 
-Collectors are adapter implementations, not product centers.
+采集器只是适配器实现，不是产品中心。
 
-- PC browser extension collector: first priority.
-- PC desktop assistant collector: later for native clients such as Qianniu PC or WeChat PC.
-- Android/ADB visual collector: later for app-only platforms or mobile-first merchants.
+- PC 浏览器插件采集器：第一优先级。
+- PC 桌面助手采集器：后续用于千牛 PC、微信 PC 等原生客户端。
+- Android/ADB 视觉采集器：后续用于仅有 App 或移动端优先的平台。
 
-## Platform Adapter Contract
+## 平台适配器契约
 
-Each platform implementation should eventually map to the same logical contract:
+每个平台实现最终都应映射到同一组逻辑能力：
 
 ```text
 detectPage()
@@ -73,23 +73,23 @@ sendReplyIfAllowed(text)
 recoverFromError()
 ```
 
-The rest of the system should not care whether the message came from DOM, Windows UI Automation, OCR, or ADB.
+系统其他模块不应该关心消息来自 DOM、Windows UI Automation、OCR 还是 ADB。
 
-## Why Not Start with ADB
+## 为什么不从 ADB 开始
 
-Android/ADB is powerful but slows down the first commercial validation:
+Android/ADB 很强，但会拖慢第一次商业验证：
 
-- Requires device or emulator setup.
-- Needs screenshot/OCR/coordinate stability work.
-- Has more compatibility issues around resolution, input method, and app updates.
-- Makes customer onboarding harder.
+- 需要准备设备或模拟器。
+- 需要处理截图、OCR、坐标稳定性。
+- 分辨率、输入法、App 更新都会带来兼容问题。
+- 普通商家的安装和理解成本更高。
 
-ADB remains a future expansion path after the PC workflow proves demand.
+ADB 保留为未来扩展路径，等 PC 工作流证明需求后再接入。
 
-## Why Not Build on a PDD-specific SDK First
+## 为什么不从拼多多专用 SDK 开始
 
-PDD-specific Playwright/SDK-style projects can be faster for one platform, but they bind the product to one platform's internal page structure, requests, and behavior. This project should use PDD as the first commercial scenario, not as the system boundary.
+拼多多专用 Playwright/SDK 类项目对单平台很快，但会把产品绑定在拼多多 Web 工作台的页面结构、内部请求和行为上。这个项目应该把拼多多作为第一个商业场景，而不是系统边界。
 
-The product boundary is:
+产品边界是：
 
-> AI customer-service assistant for multi-platform e-commerce merchants.
+> 面向多平台电商商家的 AI 客服助手。

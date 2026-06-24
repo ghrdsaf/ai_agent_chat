@@ -1,49 +1,49 @@
-# Next Build Tasks
+# 下一步开发任务
 
-## M1: Chrome Extension MVP
+## M1：Chrome 插件 MVP
 
-1. Create `collectors/browser-extension/`.
-2. Add Manifest V3 extension scaffold.
-3. Add a content script that detects supported merchant-service pages.
-4. Implement the first PDD web adapter.
-5. Extract the latest visible customer message from the current conversation.
-6. Add copy and fill-draft actions.
-7. Follow [Chrome Extension Message Capture Design](chrome-extension-message-capture-design.md) for DOM extraction, deduplication, image handling, and backend API shape.
+1. 创建 `collectors/browser-extension/`。
+2. 添加 Manifest V3 插件骨架。
+3. 添加能识别商家客服页面的 Content Script。
+4. 实现第一个拼多多 Web 适配器。
+5. 从当前会话中提取最新可见买家消息。
+6. 添加复制和填入草稿动作。
+7. 按照 [Chrome 插件消息抓取设计](chrome-extension-message-capture-design.md) 实现 DOM 提取、去重、图片处理和后端 API。
 
-## M2: Backend Message and Suggestion APIs
+## M2：后端消息和建议 API
 
-1. Add extension authentication.
-2. Add platform-account registration.
-3. Add message ingest API.
-4. Add reply suggestion API.
-5. Persist conversations, messages, suggestions, and operator actions.
-6. Add rate limits and request logging.
+1. 增加插件认证。
+2. 增加平台账号注册/解析。
+3. 增加消息入库 API。
+4. 增加回复建议 API。
+5. 持久化会话、消息、建议和客服操作。
+6. 增加限流和请求日志。
 
-## M3: AI Service
+## M3：AI 服务
 
-1. Add intent classification.
-2. Add merchant knowledge retrieval.
-3. Add reply generation.
-4. Add risk classification.
-5. Return evidence and reason codes.
+1. 增加意图识别。
+2. 增加商家知识库检索。
+3. 增加回复生成。
+4. 增加风险分类。
+5. 返回证据和原因码。
 
-## M4: Knowledge Base Console
+## M4：知识库管理后台
 
-1. Add FAQ management.
-2. Add shipping, refund, product, and tone rules.
-3. Add suggestion history.
-4. Add rejected/edited suggestion feedback.
+1. 增加 FAQ 管理。
+2. 增加发货、退款、商品、语气规则。
+3. 增加建议回复历史。
+4. 增加被拒绝/被修改建议的反馈记录。
 
-## M5: Quality and Commercial Validation
+## M5：质量和商业验证
 
-1. Track suggestion generation count.
-2. Track copy/fill rate.
-3. Track human edit and rejection rate.
-4. Track common unsupported intents.
-5. Decide the next platform based on real merchant demand.
+1. 统计建议生成数量。
+2. 统计复制/填入比例。
+3. 统计人工编辑和拒绝比例。
+4. 统计常见无法回答意图。
+5. 根据真实商家需求决定下一个平台。
 
-## Later
+## 后续
 
-1. Add more web adapters: Douyin Shop, Kuaishou Shop, Qianniu.
-2. Add PC desktop assistant for native clients.
-3. Add Android/ADB visual adapter only after PC route has paying users.
+1. 增加更多 Web 适配器：抖店、快手、千牛。
+2. 增加 PC 桌面助手，用于原生客户端。
+3. 只有在 PC 路线有付费用户后，再增加 Android/ADB 视觉适配器。

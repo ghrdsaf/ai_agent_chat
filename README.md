@@ -4,7 +4,7 @@
 
 当前产品路线优先做 **电脑端 Chrome 插件 + 后端 Agent + 商家知识库**。第一阶段不做手机 ADB 自动化，也不直接复用平台内部接口 SDK；先用更容易交付、调试和商业验证的 PC 工作台 Copilot 路线，把消息识别、AI 建议回复、知识库、人工确认流程跑通。
 
-## Current Direction
+## 当前方向
 
 - Chrome 插件作为第一采集端：读取商家 Web 客服工作台中的当前会话消息，展示 AI 建议回复，并支持一键复制或填入输入框。
 - Spring Boot 作为业务中台：负责商家账号、平台账号、会话、消息、知识库、回复建议、风险策略和套餐能力。
@@ -12,18 +12,18 @@
 - 先做 Copilot，不默认无人值守自动发送：低风险场景后续再开放自动回复白名单。
 - 后续再扩展 PC 桌面助手和 Android/ADB 视觉适配器。
 
-## Project Structure
+## 项目结构
 
 ```text
-backend/                Spring Boot business backend
-ai-service/             Python FastAPI AI service
-frontend/               Management console placeholder
-collectors/             Channel collectors and browser-extension adapters
-deploy/                 Deployment notes and future Docker/K8s config
-docs/                   Architecture docs, ADRs, and build plan
+backend/                Spring Boot 业务后端
+ai-service/             Python FastAPI AI 服务
+frontend/               管理后台占位目录
+collectors/             渠道采集器和浏览器插件适配器
+deploy/                 部署说明和未来 Docker/K8s 配置
+docs/                   架构文档、ADR 和开发计划
 ```
 
-## Build Order
+## 建设顺序
 
 1. Chrome 插件 MVP：在拼多多商家 Web 客服工作台中识别当前会话买家消息。
 2. 消息入库：统一保存平台账号、会话、消息、截图/证据和处理状态。
@@ -32,15 +32,15 @@ docs/                   Architecture docs, ADRs, and build plan
 5. 多平台抽象：把拼多多实现沉淀为 `PlatformAdapter`，后续扩展抖店、快手、千牛。
 6. 移动端补充：在 PC 路线验证付费后，再接入 Android/ADB + OCR/YOLO 视觉方案。
 
-## Key Documents
+## 关键文档
 
-- [Architecture Overview](docs/architecture-overview.md)
-- [PC Chrome Extension Roadmap](docs/pc-chrome-extension-roadmap.md)
-- [Chrome Extension Message Capture Design](docs/chrome-extension-message-capture-design.md)
-- [ADR-001: Start with PC Chrome Extension Copilot](docs/decisions/ADR-001-start-with-pc-chrome-extension-copilot.md)
-- [Next Build Tasks](docs/next-build-tasks.md)
+- [架构总览](docs/architecture-overview.md)
+- [PC Chrome 插件路线图](docs/pc-chrome-extension-roadmap.md)
+- [Chrome 插件消息抓取设计](docs/chrome-extension-message-capture-design.md)
+- [ADR-001：优先采用 PC Chrome 插件 Copilot 路线](docs/decisions/ADR-001-start-with-pc-chrome-extension-copilot.md)
+- [下一步开发任务](docs/next-build-tasks.md)
 
-## Product Positioning
+## 产品定位
 
 对外不要包装成“自动回复外挂”或“平台消息抓取工具”。产品表达应保持为：
 

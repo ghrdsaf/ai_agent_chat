@@ -1,94 +1,94 @@
-# ADR-001: Start with PC Chrome Extension Copilot
+# ADR-001：优先采用 PC Chrome 插件 Copilot 路线
 
-## Status
+## 状态
 
-Accepted
+已接受
 
-## Date
+## 日期
 
 2026-06-24
 
-## Context
+## 背景
 
-The product goal is to build a multi-platform AI customer-service assistant for e-commerce merchants. The long-term architecture should support Pinduoduo, Douyin Shop, Kuaishou Shop, Qianniu, Xianyu, and other merchant-service surfaces.
+产品目标是为电商商家构建多平台 AI 客服助手。长期架构需要支持拼多多、抖店、快手小店、千牛、闲鱼等商家客服场景。
 
-Several collection strategies are possible:
+可选采集策略包括：
 
-- Platform-specific SDK or Playwright automation.
-- Android/ADB visual automation with OCR and YOLO.
-- PC desktop automation.
-- Chrome extension for web-based merchant workstations.
+- 平台专用 SDK 或 Playwright 自动化。
+- Android/ADB + OCR/YOLO 视觉自动化。
+- PC 桌面自动化。
+- 面向 Web 商家工作台的 Chrome 插件。
 
-The team wants to own the core architecture rather than depend on a PDD-specific SDK implementation. Reuse, maintainability, and future platform expansion matter more than the fastest single-platform shortcut.
+团队希望掌握自己的核心架构，而不是依赖拼多多单平台 SDK 实现。复用性、可维护性和未来平台扩展，比最快做出单平台捷径更重要。
 
-## Decision
+## 决策
 
-Start with a **PC Chrome extension + Spring Boot backend + Python AI service + merchant knowledge base**.
+第一阶段采用 **PC Chrome 插件 + Spring Boot 后端 + Python AI 服务 + 商家知识库**。
 
-The first product shape is a Copilot:
+第一版产品形态是 Copilot：
 
-- Read customer messages from supported web customer-service workstations.
-- Generate AI reply suggestions.
-- Show suggestions to the merchant.
-- Support copy or fill-draft actions.
-- Keep human confirmation as the default sending path.
+- 读取已支持 Web 客服工作台中的买家消息。
+- 生成 AI 建议回复。
+- 将建议展示给商家。
+- 支持复制或填入草稿。
+- 默认保留人工确认发送。
 
-Do not start with Android/ADB or a PDD-specific SDK as the primary implementation path.
+不把 Android/ADB 或拼多多专用 SDK 作为第一阶段主实现路径。
 
-## Alternatives Considered
+## 备选方案
 
-### PDD-specific SDK / Playwright Workstation Automation
+### 拼多多专用 SDK / Playwright 工作台自动化
 
-Pros:
+优点：
 
-- Fastest route to a Pinduoduo-only MVP.
-- Can often access structured page data more accurately than OCR.
-- May support message send, order lookup, and workstation behaviors earlier.
+- 做拼多多单平台 MVP 最快。
+- 通常能比 OCR 更准确地拿到结构化页面数据。
+- 可能更早支持发消息、查订单、工作台行为等能力。
 
-Cons:
+缺点：
 
-- Strongly coupled to Pinduoduo's web workstation internals.
-- Harder to reuse across Douyin, Kuaishou, Qianniu, and other platforms.
-- Increases the chance that the product becomes a PDD script instead of a multi-platform system.
-- May encourage relying on non-public behavior that changes without notice.
+- 强绑定拼多多 Web 工作台内部实现。
+- 难以复用到抖店、快手、千牛等平台。
+- 容易让产品变成拼多多脚本，而不是多平台系统。
+- 可能诱导依赖非公开行为，而这些行为会随时变化。
 
-Rejected as the primary architecture. It can still be studied for feature ideas and business capability mapping.
+结论：不作为主架构。可以研究其能力清单，用来参考业务功能。
 
-### Android/ADB Visual Automation First
+### Android/ADB 视觉自动化优先
 
-Pros:
+优点：
 
-- Platform independent when the target app runs on Android.
-- Aligns with the long-term visual automation architecture.
-- Can support app-only platforms.
+- 只要目标 App 跑在 Android 上，理论上平台无关。
+- 符合长期视觉自动化架构。
+- 能支持只有 App 的平台。
 
-Cons:
+缺点：
 
-- Slower commercial validation.
-- Requires emulator or physical-device onboarding.
-- Needs OCR, screenshot, resolution, coordinate, input-method, and recovery work before the product feels stable.
-- Harder for merchants to install and understand in the first version.
+- 商业验证更慢。
+- 需要商家准备模拟器或真机。
+- OCR、截图、分辨率、坐标、输入法、异常恢复都要先做稳定。
+- 第一版安装和理解成本更高。
 
-Deferred until after PC Copilot validation.
+结论：推迟到 PC Copilot 验证之后。
 
-### PC Desktop Automation First
+### PC 桌面自动化优先
 
-Pros:
+优点：
 
-- Can support native desktop clients.
-- Useful for Qianniu PC, WeChat PC, and similar tools.
+- 能支持原生桌面客户端。
+- 对千牛 PC、微信 PC 等工具有价值。
 
-Cons:
+缺点：
 
-- Windows compatibility, DPI scaling, and UI Automation reliability add complexity.
-- Less straightforward than a Chrome extension for web workstations.
+- Windows 兼容性、DPI 缩放、UI Automation 稳定性都会增加复杂度。
+- 对 Web 工作台来说，不如 Chrome 插件直接。
 
-Deferred until after the browser-extension path proves demand.
+结论：推迟到浏览器插件路线证明需求之后。
 
-## Consequences
+## 影响
 
-- The first collector will be a Chrome extension adapter, not an ADB adapter.
-- The backend schema should remain platform-neutral: platform accounts, conversations, messages, suggestions, knowledge-base references, risk decisions, and evidence.
-- Sending should be conservative at first: copy or fill draft by default, low-risk automatic sending only after quality and compliance controls exist.
-- Future adapters must implement a common logical contract so DOM, desktop, OCR, and ADB collectors can feed the same backend.
-- Documentation and task planning should describe this as an AI customer-service Copilot, not as an automatic-reply bot or platform message scraper.
+- 第一个采集器是 Chrome 插件适配器，而不是 ADB 适配器。
+- 后端数据模型必须保持平台无关：平台账号、会话、消息、建议、知识库引用、风险决策和证据。
+- 发送动作必须保守：默认复制或填入草稿，低风险自动发送要等质量和合规控制完成后再开放。
+- 后续所有适配器都要实现同一组逻辑契约，让 DOM、桌面、OCR、ADB 采集器都能接入同一个后端。
+- 文档和任务规划应把产品描述为 AI 客服 Copilot，而不是自动回复机器人或平台消息抓取器。

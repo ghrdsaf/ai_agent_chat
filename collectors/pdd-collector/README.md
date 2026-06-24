@@ -1,52 +1,30 @@
 # pdd-collector
 
-拼多多采集器目录。
+拼多多采集器历史占位目录。
 
-## 第一阶段职责
+## 当前状态
 
-- 复用登录态
-- 扫描会话列表
-- 抽取最新消息
-- 上报到 Chatwoot API Inbox
+第一阶段路线已经调整为 **Chrome 插件 + Web 客服工作台**。因此新的拼多多 Web 采集实现应优先放到：
 
-## 推荐技术栈
-
-- `Playwright`
-- `TypeScript` 或 `Python`
-
-## 输出协议
-
-采集器不直接参与业务决策，只负责把消息标准化后发出。
-
-### 上报到 Spring Boot 的结构
-
-```json
-{
-  "channel": "pinduoduo",
-  "accountId": "shop-001",
-  "externalSessionId": "pdd-session-001",
-  "externalUserId": "buyer-001",
-  "senderType": "customer",
-  "messageType": "text",
-  "messageText": "这个怎么安装",
-  "messageTime": "2026-06-24T20:40:00+08:00",
-  "rawPayload": {
-    "source": "playwright"
-  }
-}
+```text
+collectors/browser-extension/
 ```
 
-### 更推荐的方式
+并以 `pdd-web-adapter` 的形式存在。
 
-直接由采集器推送到 Chatwoot API Inbox：
+## 保留原因
 
-1. 按平台用户创建/查询 contact
-2. 维护 external session 和 chatwoot conversation 的映射
-3. 追加 incoming message
+该目录暂时保留，用于记录早期曾考虑过的拼多多专用采集器方向。后续如果确认不再需要，可以删除或迁移为浏览器插件适配器文档。
 
-## 降级要求
+## 新实现应满足
 
-- 登录失效后停止采集并报警
-- 页面结构变化时保存截图和 HTML 快照
-- 未完成抽取的消息不得直接触发自动回复
+- 使用 DOM 提取当前会话可见消息。
+- 不依赖拼多多隐藏接口。
+- 不默认自动发送。
+- 支持复制和填入草稿。
+- 通过后端统一 API 入库。
 
+## 参考文档
+
+- [Chrome 插件消息抓取设计](../../docs/chrome-extension-message-capture-design.md)
+- [PC Chrome 插件路线图](../../docs/pc-chrome-extension-roadmap.md)
