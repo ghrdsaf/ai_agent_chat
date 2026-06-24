@@ -16,9 +16,8 @@ create table if not exists message (
     sender_type varchar(32) not null,
     message_type varchar(32) not null,
     message_text varchar(4000) not null,
-    message_time timestamptz not null,
+    message_time timestamp with time zone not null,
     fingerprint varchar(512) not null unique,
     process_status varchar(32) not null,
     risk_level varchar(32) not null
 );
-

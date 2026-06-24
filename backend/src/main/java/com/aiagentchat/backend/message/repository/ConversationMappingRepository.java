@@ -7,5 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface ConversationMappingRepository extends JpaRepository<ConversationMappingEntity, Long> {
 
     Optional<ConversationMappingEntity> findByChatwootConversationId(Long chatwootConversationId);
-}
 
+    Optional<ConversationMappingEntity> findByChannelTypeAndExternalSessionId(String channelType, String externalSessionId);
+}

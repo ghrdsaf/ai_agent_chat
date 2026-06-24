@@ -78,7 +78,19 @@ MVP 默认不启用后端 API。这样即使后端还没实现插件接口，也
 - 复制；
 - 填入草稿。
 
-启用后端 API 后，插件会尝试调用：
+启用后端 API 前，建议先启动：
+
+```bash
+# 终端 1：启动 AI 服务
+cd ai-service
+uvicorn app.main:app --reload --port 8000
+
+# 终端 2：启动 Spring Boot 后端
+cd backend
+mvn spring-boot:run
+```
+
+启用后端 API 后，插件会调用：
 
 ```text
 POST /api/extension/platform-accounts/resolve
@@ -86,7 +98,9 @@ POST /api/extension/messages/ingest
 POST /api/extension/reply-suggestions
 ```
 
-这些接口需要后端后续补齐。
+这些接口已在 Spring Boot 后端中实现。后端会把消息写入现有 `conversation_mapping` 和 `message` 表，并调用 `ai-service` 生成建议回复。
+
+如果后端或 AI 服务不可用，插件会自动退回本地兜底建议，方便继续演示复制和填入草稿流程。
 
 ## 重要限制
 

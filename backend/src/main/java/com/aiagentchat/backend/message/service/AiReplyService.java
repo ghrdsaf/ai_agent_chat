@@ -2,6 +2,7 @@ package com.aiagentchat.backend.message.service;
 
 import com.aiagentchat.backend.message.dto.AiReplyRequest;
 import com.aiagentchat.backend.message.dto.AiReplyResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
@@ -10,9 +11,9 @@ public class AiReplyService {
 
     private final RestClient restClient;
 
-    public AiReplyService(RestClient.Builder builder) {
+    public AiReplyService(RestClient.Builder builder, @Value("${ai.service.base-url:http://localhost:8000}") String baseUrl) {
         this.restClient = builder
-                .baseUrl("http://localhost:8000")
+                .baseUrl(baseUrl)
                 .build();
     }
 
@@ -24,4 +25,3 @@ public class AiReplyService {
                 .body(AiReplyResponse.class);
     }
 }
-
