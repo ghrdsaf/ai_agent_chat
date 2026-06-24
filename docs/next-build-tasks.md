@@ -8,6 +8,7 @@
 4. Implement the first PDD web adapter.
 5. Extract the latest visible customer message from the current conversation.
 6. Add copy and fill-draft actions.
+7. Follow [Chrome Extension Message Capture Design](chrome-extension-message-capture-design.md) for DOM extraction, deduplication, image handling, and backend API shape.
 
 ## M2: Backend Message and Suggestion APIs
 

@@ -36,6 +36,7 @@ docs/                   Architecture docs, ADRs, and build plan
 
 - [Architecture Overview](docs/architecture-overview.md)
 - [PC Chrome Extension Roadmap](docs/pc-chrome-extension-roadmap.md)
+- [Chrome Extension Message Capture Design](docs/chrome-extension-message-capture-design.md)
 - [ADR-001: Start with PC Chrome Extension Copilot](docs/decisions/ADR-001-start-with-pc-chrome-extension-copilot.md)
 - [Next Build Tasks](docs/next-build-tasks.md)
 
