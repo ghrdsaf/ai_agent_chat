@@ -2,13 +2,13 @@
 
 ## M1：Chrome 插件 MVP
 
-1. 创建 `collectors/browser-extension/`。
-2. 添加 Manifest V3 插件骨架。
-3. 添加能识别商家客服页面的 Content Script。
-4. 实现第一个拼多多 Web 适配器。
-5. 从当前会话中提取最新可见买家消息。
-6. 添加复制和填入草稿动作。
-7. 按照 [Chrome 插件消息抓取设计](chrome-extension-message-capture-design.md) 实现 DOM 提取、去重、图片处理和后端 API。
+1. 已创建 `collectors/browser-extension/`。
+2. 已添加 Manifest V3 插件骨架。
+3. 已添加能识别商家客服页面的 Content Script。
+4. 已实现第一个拼多多 Web 适配器初版。
+5. 已支持从当前会话中提取最新可见买家消息。
+6. 已添加复制和填入草稿动作。
+7. 后续继续按照 [Chrome 插件消息抓取设计](chrome-extension-message-capture-design.md) 优化 DOM 提取、去重、图片处理和后端 API。
 
 ## M2：后端消息和建议 API
 

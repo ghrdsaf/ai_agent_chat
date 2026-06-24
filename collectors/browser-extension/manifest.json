@@ -1,0 +1,36 @@
+{
+  "manifest_version": 3,
+  "name": "AI 客服助手 Copilot",
+  "description": "从 Web 商家客服工作台读取可见买家消息，生成 AI 建议回复，并支持复制或填入草稿。",
+  "version": "0.1.0",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "tabs"
+  ],
+  "host_permissions": [
+    "http://localhost:*/*",
+    "https://mms.pinduoduo.com/*"
+  ],
+  "action": {
+    "default_title": "AI 客服助手",
+    "default_popup": "popup/popup.html"
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://mms.pinduoduo.com/*"
+      ],
+      "js": [
+        "shared/hash.js",
+        "adapters/pdd-web-adapter.js",
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}

@@ -37,6 +37,8 @@ docs/                   架构文档、ADR 和开发计划
 - [架构总览](docs/architecture-overview.md)
 - [PC Chrome 插件路线图](docs/pc-chrome-extension-roadmap.md)
 - [Chrome 插件消息抓取设计](docs/chrome-extension-message-capture-design.md)
+- [Chrome 插件开发提示词](docs/prompts/chrome-extension-plugin-development-prompt.md)
+- [Chrome 插件使用说明](collectors/browser-extension/README.md)
 - [ADR-001：优先采用 PC Chrome 插件 Copilot 路线](docs/decisions/ADR-001-start-with-pc-chrome-extension-copilot.md)
 - [下一步开发任务](docs/next-build-tasks.md)
 

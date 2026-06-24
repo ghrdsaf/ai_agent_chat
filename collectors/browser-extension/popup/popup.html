@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AI 客服助手</title>
+    <link rel="stylesheet" href="popup.css">
+  </head>
+  <body>
+    <main class="app">
+      <header class="header">
+        <div>
+          <h1>AI 客服助手</h1>
+          <p id="statusText">正在读取当前页面</p>
+        </div>
+        <span id="statusDot" class="status-dot"></span>
+      </header>
+
+      <section class="section">
+        <label class="field">
+          <span>后端地址</span>
+          <input id="backendBaseUrl" type="url" placeholder="http://localhost:8080">
+        </label>
+        <label class="toggle">
+          <input id="enableBackend" type="checkbox">
+          <span>启用后端 API</span>
+        </label>
+        <button id="saveConfig" class="button secondary" type="button">保存配置</button>
+      </section>
+
+      <section class="section">
+        <div class="section-title">当前会话</div>
+        <dl class="meta">
+          <div>
+            <dt>平台</dt>
+            <dd id="platformText">-</dd>
+          </div>
+          <div>
+            <dt>店铺</dt>
+            <dd id="shopText">-</dd>
+          </div>
+          <div>
+            <dt>会话</dt>
+            <dd id="conversationText">-</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section class="section">
+        <div class="section-title">最新买家消息</div>
+        <div id="messageBox" class="message empty">未读取到买家消息</div>
+      </section>
+
+      <section class="section">
+        <div class="section-title">建议回复</div>
+        <textarea id="suggestionText" class="suggestion" placeholder="读取到买家消息后会生成建议回复"></textarea>
+        <div class="actions">
+          <button id="refreshSuggestion" class="button secondary" type="button">重新生成</button>
+          <button id="copySuggestion" class="button secondary" type="button">复制</button>
+          <button id="fillDraft" class="button primary" type="button">填入草稿</button>
+        </div>
+        <div id="riskText" class="risk">风险：-</div>
+      </section>
+    </main>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
