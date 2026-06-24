@@ -72,12 +72,16 @@ public class ExtensionIngestService {
 
     public ExtensionSuggestionDto suggestReply(ExtensionReplySuggestionRequest request) {
         ExtensionMessageDto message = request.message();
-        AiReplyResponse response = aiReplyService.requestSuggestion(new AiReplyRequest(
-                null,
-                request.platform(),
-                null,
-                defaultString(message.text(), "")));
-        return toSuggestion(message.externalMessageKey(), null, response);
+        try {
+            AiReplyResponse response = aiReplyService.requestSuggestion(new AiReplyRequest(
+                    null,
+                    request.platform(),
+                    null,
+                    defaultString(message.text(), "")));
+            return toSuggestion(message.externalMessageKey(), null, response);
+        } catch (RuntimeException ex) {
+            return fallbackSuggestion(message.externalMessageKey(), null, defaultString(message.text(), ""));
+        }
     }
 
     private ConversationMappingEntity findOrCreateConversation(ExtensionMessagesIngestRequest request) {
@@ -97,12 +101,16 @@ public class ExtensionIngestService {
     }
 
     private ExtensionSuggestionDto buildSuggestion(MessageEntity message, String externalMessageKey) {
-        AiReplyResponse response = aiReplyService.requestSuggestion(new AiReplyRequest(
-                message.getId(),
-                message.getChannelType(),
-                null,
-                message.getMessageText()));
-        return toSuggestion(externalMessageKey, message.getId(), response);
+        try {
+            AiReplyResponse response = aiReplyService.requestSuggestion(new AiReplyRequest(
+                    message.getId(),
+                    message.getChannelType(),
+                    null,
+                    message.getMessageText()));
+            return toSuggestion(externalMessageKey, message.getId(), response);
+        } catch (RuntimeException ex) {
+            return fallbackSuggestion(externalMessageKey, message.getId(), message.getMessageText());
+        }
     }
 
     private ExtensionSuggestionDto toSuggestion(String externalMessageKey, Long messageId, AiReplyResponse response) {
@@ -113,6 +121,18 @@ public class ExtensionIngestService {
                 response.replyText(),
                 response.riskLevel(),
                 response.action());
+    }
+
+    private ExtensionSuggestionDto fallbackSuggestion(String externalMessageKey, Long messageId, String messageText) {
+        String text = messageText != null && messageText.contains("发货")
+                ? "亲，这款商品正常会尽快安排发出，具体时效以页面和订单信息为准哦。"
+                : "亲，您好，我看到了您的问题，这边马上帮您确认一下。";
+        return new ExtensionSuggestionDto(
+                externalMessageKey,
+                messageId != null ? "msg_" + messageId : "direct_" + externalMessageKey,
+                text,
+                "low",
+                "human_confirm");
     }
 
     private String buildMessageFingerprint(ExtensionMessagesIngestRequest request, ExtensionMessageDto message) {
